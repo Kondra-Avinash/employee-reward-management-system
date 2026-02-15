@@ -13,7 +13,7 @@ export interface Reward {
 
 @Injectable({ providedIn: 'root' })
 export class RewardService {
-  private baseUrl = `${environment.apiUrl}/api/rewards`;
+  private baseUrl = `http://localhost:8080/api/rewards`;
 
   constructor(private http: HttpClient) {}
 

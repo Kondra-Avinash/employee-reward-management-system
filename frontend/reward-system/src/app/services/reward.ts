@@ -25,11 +25,16 @@ export class RewardService {
     return this.http.post<Reward>(this.baseUrl, reward);
   }
 
-  update(id: number, reward: Reward): Observable<Reward> {
+  update(id: number, reward: Reward) {
     return this.http.put<Reward>(`${this.baseUrl}/${id}`, reward);
   }
 
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  getById(id: number) {
+    return this.http.get<Reward>(`${this.baseUrl}/${id}`);
   }
 }

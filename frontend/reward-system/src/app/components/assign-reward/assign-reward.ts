@@ -57,11 +57,11 @@ export class AssignRewardComponent implements OnInit {
       dateAwarded: ['', Validators.required]
     });
 
-    // ✅ Load employees
+    // Load employees
     this.empService.getAllSimple()
       .subscribe((data: Employee[]) => (this.employees = data));
 
-    // ✅ Detect Edit Mode
+    // Detect Edit Mode
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {

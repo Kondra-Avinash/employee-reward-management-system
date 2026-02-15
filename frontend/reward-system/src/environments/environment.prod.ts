@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://rs-production-ba50.up.railway.app'
+  apiUrl: 'https://employee-reward-management-system-production.up.railway.app'
 };

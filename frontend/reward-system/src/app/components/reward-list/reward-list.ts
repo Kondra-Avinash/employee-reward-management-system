@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from '../../confirm-delete-dialog/confirm-delete-dialog';
+
 
 @Component({
   selector: 'app-reward-list',
@@ -15,7 +18,8 @@ import { map } from 'rxjs/operators';
     CommonModule,
     MatTableModule,
     MatButtonModule,
-    RouterModule
+    RouterModule,
+    MatDialogModule   
   ],
   templateUrl: './reward-list.html'
 })
@@ -27,7 +31,8 @@ export class RewardListComponent {
 
   constructor(
     private rewardService: RewardService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private dialog: MatDialog
   ) {
     this.data$ = forkJoin({
       employees: this.employeeService.getAllSimple(),
@@ -39,13 +44,29 @@ export class RewardListComponent {
     return employees.find(e => e.id === employeeId)?.name || 'Unknown';
   }
 
-  deleteReward(id: number) {
-    this.rewardService.delete(id).subscribe(() => {
-      // refresh after delete
-      this.data$ = forkJoin({
-        employees: this.employeeService.getAllSimple(),
-        rewards: this.rewardService.getAll()
-      });
+  loadData() {
+    this.data$ = forkJoin({
+      employees: this.employeeService.getAllSimple(),
+      rewards: this.rewardService.getAll()
     });
   }
+
+
+  deleteReward(id: number) {
+
+  const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+    width: '400px',
+    disableClose: true,
+    data: { name: 'this reward' }   
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.rewardService.delete(id).subscribe(() => {
+        this.loadData();   
+      });
+    }
+  });
+}
+
 }

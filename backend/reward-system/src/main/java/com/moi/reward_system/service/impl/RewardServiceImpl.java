@@ -28,11 +28,11 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public RewardDTO assignReward(RewardDTO dto) {
 
-        // 1️⃣ Fetch employee
+        //  Fetch employee
         Employee emp = employeeRepo.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new EmployeeNotFoundException(dto.getEmployeeId()));
 
-        // 2️⃣ 🔥 Duplicate Reward Prevention
+        //  Duplicate Reward Prevention
         boolean alreadyExists = rewardRepo
                 .existsByEmployeeIdAndRewardNameAndDateAwarded(
                         dto.getEmployeeId(),
@@ -46,7 +46,7 @@ public class RewardServiceImpl implements RewardService {
             );
         }
 
-        // 3️⃣ 🔥 Monthly Limit Rule
+        // Monthly Limit Rule
         LocalDate date = dto.getDateAwarded();
         LocalDate startOfMonth = date.withDayOfMonth(1);
         LocalDate endOfMonth = date.withDayOfMonth(date.lengthOfMonth());
@@ -63,7 +63,7 @@ public class RewardServiceImpl implements RewardService {
             );
         }
 
-        // 4️⃣ Save reward
+        // Save reward
         Reward reward = Reward.builder()
                 .employee(emp)
                 .rewardName(dto.getRewardName())
@@ -138,7 +138,7 @@ public class RewardServiceImpl implements RewardService {
         Employee emp = employeeRepo.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new EmployeeNotFoundException(dto.getEmployeeId()));
 
-        // 🔥 Prevent duplicate (excluding current record)
+        // Prevent duplicate (excluding current record)
         boolean duplicateExists = rewardRepo
                 .existsByEmployeeIdAndRewardNameAndDateAwarded(
                         dto.getEmployeeId(),
@@ -155,7 +155,7 @@ public class RewardServiceImpl implements RewardService {
             );
         }
 
-        // 🔥 Monthly limit rule (excluding current reward)
+        // Monthly limit rule (excluding current reward)
         LocalDate date = dto.getDateAwarded();
         LocalDate start = date.withDayOfMonth(1);
         LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
@@ -177,7 +177,7 @@ public class RewardServiceImpl implements RewardService {
             );
         }
 
-        // 🔥 Update fields
+        // Update fields
         reward.setRewardName(dto.getRewardName());
         reward.setDateAwarded(dto.getDateAwarded());
         reward.setCategory(dto.getCategory());

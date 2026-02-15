@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RewardService {
 
-    RewardDTO assignReward(RewardDTO dto);      // <-- add this
+    RewardDTO assignReward(RewardDTO dto);      
     List<RewardDTO> getAllRewards(
             RewardCategory category,
             Long employeeId
